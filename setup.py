@@ -15,7 +15,7 @@ import cleanup
 import brtconfig
 
 
-class BaseRuntimeSetupDocker(module_framework.CommonFunctions, Test):
+class BaseRuntimeSetupDocker(Test, module_framework.CommonFunctions):
 
     def setUp(self):
 

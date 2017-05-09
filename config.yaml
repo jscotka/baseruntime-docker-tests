@@ -11,6 +11,7 @@ packages:
 default_module: docker
 module:
     docker:
+        setup: docker inspect base-runtime-smoke || python ./setup.py
         start:
         labels:
             description: "I dont know"
