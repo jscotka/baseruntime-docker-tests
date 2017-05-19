@@ -6,7 +6,7 @@ service:
     port:
 packages:
     profiles:
-        - baseimage
+        - container
     rpms:
 default_module: docker
 module:

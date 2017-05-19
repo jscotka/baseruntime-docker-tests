@@ -64,12 +64,12 @@ class BaseRuntimeSetupDocker(Test, module_framework.CommonFunctions):
         if "profiles" not in mod_yaml["data"].keys():
             self.error("'profiles' key was not found in 'data' section")
 
-        if "baseimage" not in mod_yaml["data"]["profiles"].keys():
-            self.error("'baseimage' key was not found in 'profiles' section")
+        if "container" not in mod_yaml["data"]["profiles"].keys():
+            self.error("'container' key was not found in 'profiles' section")
 
-        base_profile = mod_yaml["data"]["profiles"]["baseimage"]
+        base_profile = mod_yaml["data"]["profiles"]["container"]
         if "rpms" not in base_profile.keys():
-            self.error("'rpms' key was not found in 'baseimage' profile")
+            self.error("'rpms' key was not found in 'container' profile")
 
         req_pkgs = base_profile["rpms"]
         if not req_pkgs:
