@@ -241,6 +241,8 @@ class BaseRuntimeSmokeTest(module_framework.AvocadoTest):
             "cmds" : lang_spanish
         }
 
+        #Check if C.utf8 is the default locale
+        self.run("echo $LANG | grep 'C.utf8'")
 
         for i18n in langs.keys():
             lang = langs[i18n]

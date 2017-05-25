@@ -196,6 +196,8 @@ class BaseRuntimeSetupDocker(Test, module_framework.CommonFunctions):
         #Dockerfile to use when building final image
         dockerfile = 'EOF\n'
         dockerfile += 'FROM %s\n' % img_scratch
+        #Set default locale to C.utf8
+        dockerfile += 'ENV LANG C.utf8\n'
         if docker_labels:
             for key in docker_labels.keys():
                 dockerfile += 'LABEL %s="%s"\n' % (key, docker_labels[key])
