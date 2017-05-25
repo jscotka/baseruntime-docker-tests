@@ -93,3 +93,10 @@ def get_docker_labels(self):
     if 'labels' not in docker_cfg.keys():
         return None
     return docker_cfg['labels']
+
+def get_test_profile(self):
+    """
+    From config file get the labels that should be added to the image
+    """
+
+    return "container"

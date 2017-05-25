@@ -24,6 +24,7 @@ class BaseRuntimeSetupDocker(Test, module_framework.CommonFunctions):
 
     def _process_mockcfg(self):
 
+        profile_name = brtconfig.get_test_profile(self)
         mockcfg = self.mockcfg
 
         mock_root = ''
@@ -64,12 +65,12 @@ class BaseRuntimeSetupDocker(Test, module_framework.CommonFunctions):
         if "profiles" not in mod_yaml["data"].keys():
             self.error("'profiles' key was not found in 'data' section")
 
-        if "container" not in mod_yaml["data"]["profiles"].keys():
-            self.error("'container' key was not found in 'profiles' section")
+        if profile_name not in mod_yaml["data"]["profiles"].keys():
+            self.error("'%s' key was not found in 'profiles' section" % profile_name)
 
-        base_profile = mod_yaml["data"]["profiles"]["container"]
+        base_profile = mod_yaml["data"]["profiles"][profile_name]
         if "rpms" not in base_profile.keys():
-            self.error("'rpms' key was not found in 'container' profile")
+            self.error("'rpms' key was not found in '%s' profile" % profile_name)
 
         req_pkgs = base_profile["rpms"]
         if not req_pkgs:
