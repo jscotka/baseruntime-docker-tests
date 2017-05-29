@@ -68,7 +68,9 @@ class BaseRuntimeSmokeTest(module_framework.AvocadoTest):
 
     def _get_all_installed_pkgs(self):
         try:
-            cmd_result = self.run("rpm -qa --qf='%{name}\n'")
+            cmd_result = self.run("rpm -qa --qf='%{{name}}\n'")
+        except BaseException as details:
+            self.error("Could not get all installed packages (%s)" % details)
         except:
             self.error("Could not get all installed packages")
         output_list = cmd_result.stdout.split("\n")
