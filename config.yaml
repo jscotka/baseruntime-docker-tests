@@ -27,6 +27,7 @@ module:
         source: http://pkgs.fedoraproject.org/cgit/modules/base-runtime.git
         container: docker=base-runtime-smoke
     rpm:
+        setup: echo LANG=C.utf8 > {ROOT}/etc/locale.conf
         start:
         stop:
         status:

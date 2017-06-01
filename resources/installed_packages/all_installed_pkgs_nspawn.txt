@@ -77,6 +77,8 @@ libmetalink
 libmount
 libmpc
 libnghttp2
+libsss_idmap
+libsss_nss_idmap
 libpcap
 libpeas
 libpsl
@@ -99,11 +101,13 @@ libuuid
 libverto
 libxml2
 lua-libs
+lz4
 lz4-libs
 lzo
 make
 microdnf
 mpfr
+ncurses
 ncurses-base
 ncurses-libs
 nettle
@@ -133,6 +137,7 @@ sed
 setup
 shadow-utils
 sqlite-libs
+sssd-client
 systemd
 systemd-libs
 systemd-pam
