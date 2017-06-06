@@ -278,6 +278,15 @@ class BaseRuntimeSmokeTest(module_framework.AvocadoTest):
                 except:
                     self.error("Could not remove %s" % lang["pkg"])
 
+    def test_dnf(self):
+        """
+        Check if DNF is able to install a package
+        """
+        package = "tar"
+        self.run("microdnf install dnf")
+        self.run("dnf install -y %s" % package)
+        self.run("dnf remove -y %s" % package)
+        self.run("microdnf remove dnf")
 
     def _prepare_compiler_test_directory(self):
 

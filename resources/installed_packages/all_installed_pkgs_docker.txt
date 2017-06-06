@@ -12,6 +12,7 @@ cyrus-sasl-lib
 elfutils-libelf
 expat
 fedora-modular-release
+fedora-modular-repos
 filesystem
 gawk
 glib2

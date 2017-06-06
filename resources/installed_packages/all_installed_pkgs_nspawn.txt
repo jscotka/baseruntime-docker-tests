@@ -25,6 +25,7 @@ elfutils-libs
 emacs-filesystem
 expat
 fedora-modular-release
+fedora-modular-repos
 filesystem
 gawk
 gc

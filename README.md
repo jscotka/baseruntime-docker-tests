@@ -48,7 +48,10 @@ Log out and log back in so that your group membership is re-evaluated.
 Add the following lines to /etc/sudoers or put them into a new file such as /etc/sudoers.d/mock-tar-chroot:
 
     %mock ALL=(root) NOPASSWD: /usr/bin/tar -C /var/lib/mock/*/root -c .,\
-                               !/usr/bin/tar -C /var/lib/mock/* */root -c .
+                               !/usr/bin/tar -C /var/lib/mock/* */root -c .,\
+                               /usr/bin/tee /var/lib/mock/*/root/etc/dnf/dnf.conf,\
+                               !/usr/bin/tee /var/lib/mock/* */root/etc/dnf/dnf.conf
+
 
 The above configuration allows members of the 'mock' group to generate a complete docker image. An image can still be created without performing this step, but it will be incomplete and the test setup phase will finish with a warning.
 
