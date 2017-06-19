@@ -139,6 +139,89 @@ class BaseRuntimeSmokeTest(module_framework.AvocadoTest):
             if pkg not in expected_pkgs:
                 self.error("Did not expect to have package '%s' installed" % pkg)
 
+    def testInstallAllPackages(self):
+        """
+        Check if all packages that we ship are able to be installed on module
+        """
+
+        profile_name = brtconfig.get_test_profile(self)
+        mod_yaml = self.getModulemdYamlconfig()
+        if not mod_yaml:
+            self.error("Could not read modulemd Yaml file")
+
+        if "data" not in mod_yaml.keys():
+            self.error("'data' key was not found in modulemd Yaml file")
+
+        if "api" not in mod_yaml["data"].keys():
+            self.error("'api' key was not found in 'data' section")
+
+        if "rpms" not in mod_yaml["data"]["api"].keys():
+            self.error("'rpms' key was not found in 'api'")
+
+        all_api_pkgs = mod_yaml["data"]["api"]["rpms"]
+
+        repo_path = None
+        mod_dep = self.getModuleDependencies()
+        mod_name = "baseruntime"
+        if mod_dep and mod_name in mod_dep.keys():
+            if "urls" in mod_dep[mod_name].keys():
+                if len(mod_dep[mod_name]["urls"]) != 1:
+                    self.error("Expected exactly 1 repo url for %s" % mod_name)
+            repo_path = mod_dep[mod_name]["urls"][0]
+
+
+        # docker uses the repo defined on mock cfg
+        if self.moduleType == "docker":
+            mockcfg = ""
+            with open(brtconfig.get_mockcfg(self)) as f:
+                mockcfg = f.read()
+            for line in mockcfg.split("\n"):
+                m = re.match("baseurl=(\S+)", line)
+                if m:
+                    repo_path = m.group(1)
+
+        if not repo_path:
+            self.error("Could not find repo to query the packages")
+
+        #Query all available packages in our repo
+        query_repo_cmd = "repoquery  -a --qf '%%{{name}}' --repofrompath=0,%s --repoid=0" % repo_path
+        all_repo_pkgs = self.runHost(query_repo_cmd).stdout.split("\n")
+
+        all_avail_pkgs = []
+        #Available packages are the ones from API that are available on repo
+        for pkg in all_api_pkgs:
+            if pkg in all_repo_pkgs:
+                all_avail_pkgs.append(pkg)
+
+        skip_pkg_image = {}
+        skip_pkg_image["docker"] = ["kernel", "dracut"]
+        skip_pkg_image["nspawn"] = ["kernel", "dracut"]
+        conflict_pkgs = {
+            "coreutils" : "coreutils-single",
+            "libcrypt-nss" : "libcrypt"
+        }
+
+       #Try to install packages that have conflicting packages installed
+        for pkg in conflict_pkgs.keys():
+            self.run("microdnf remove %s" % conflict_pkgs[pkg])
+            self.run("rpm -q %s" % pkg)
+            self.run("microdnf remove %s" % pkg)
+            self.run("rpm -q %s" % conflict_pkgs[pkg])
+
+        pkgs_2_install = []
+        for pkg in all_avail_pkgs:
+            if pkg in conflict_pkgs.keys():
+                continue
+            #Do not install packages such as dracut* on docker.
+            skip = False
+            for skip_pkg in skip_pkg_image[self.moduleType]:
+                if pkg.startswith(skip_pkg):
+                    skip = True
+            if not skip:
+                pkgs_2_install.append(pkg)
+        self.run("microdnf install %s > /dev/null" % " ".join(pkgs_2_install))
+
+
     def testUserManipulation(self):
         """
         Check if can add, remove and modify user
