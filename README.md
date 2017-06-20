@@ -91,6 +91,8 @@ Optional test script configuration overrides can provided on the command line us
 
     $ avocado run $TEST.py [ --mux-inject 'run:$TESTPARAM:$VALUE' ... ]
 
+**Note:** When using avocado-51.0 or later, you will get an avocado run error when attempting to use the `--mux-inject` command line option unless you also have the `python2-avocado-plugins-varianter-yaml-to-mux` package installed. For more information please refer to the [avocado 51.0 release notes](http://avocado-framework.readthedocs.io/en/51.0/release_notes/51_0.html).
+
 ### mockcfg - path to mock configuration file
 
 The setup.py and teardown.py scripts need to read a base-runtime mock configuration file. The default path is 'resources/base-runtime-mock.cfg' relative to the directory where the test script resides. This path can be overridden with the 'mockcfg' parameter.
