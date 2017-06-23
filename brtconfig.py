@@ -81,7 +81,7 @@ def get_docker_labels(self):
     From config file get the labels that should be added to the image
     """
 
-    config = module_framework.get_correct_config()
+    config = module_framework.get_config()
     if not config:
         self.error("Could not get config file")
     if 'module' not in config.keys():
