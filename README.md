@@ -16,10 +16,10 @@ Install prerequisite RPMs if necessary:
 
         $ sudo dnf install mock python2-configparser
 
-* modularity-testing-framework - Modularity test framework
+* meta-test-family - Meta test family
 
-        $ sudo dnf copr enable phracek/Modularity-testing-framework
-        $ sudo dnf install modularity-testing-framework
+        $ sudo dnf copr enable phracek/meta-test-family
+        $ sudo dnf install meta-test-family
 
 ### Mock setup
 
